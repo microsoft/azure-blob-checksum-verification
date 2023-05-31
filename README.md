@@ -1,14 +1,49 @@
-# Project
+# Azure blob Checksum Verification
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+This repo provides a simple mechanism to validate local file integrity against the checksums generated and stored by Azure blob storage.
 
-As the maintainer of this project, please make a few updates:
+1.	Clone the code from Github and enter the repo:
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+```
+git clone https://github.com/microsoft/azure-blob-checksum-verification
+cd azure-blob-checksum-verification
+```
+
+2.	Install [azcopy](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10#download-azcopyi)
+
+3.	Login to azcopy, example below. 
+
+```
+azcopy login
+```
+
+Set the right permissions
+
+ 
+Important, to interact with the Azure Storage Account, you will need to set the right permissions for the account, even if you are the storage account owner.
+
+If you want to upload files, you will need to assign Storage Blob Data Contributor or Storage Blob Data Owner.
+
+
+4.	Run the following command to check file integrity
+
+```
+./file-verification.sh -a account -c container-path -f files -o outfile 
+```
+
+5.	You should see a confirmation content matches
+
+```
+The checksums match.
+```
+
+Also a list of all checks and results are stored in an output file.
+
+```
+File Name       Local MD5       On Azure MD5    Status
+
+CODE_OF_CONDUCT.md      c06b12caf3c901eb3156e3dd5b0aea56        c06b12caf3c901eb3156e3dd5b0aea56        PASS
+```
 
 ## Contributing
 
