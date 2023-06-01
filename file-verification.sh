@@ -26,11 +26,28 @@ while getopts :a:c:f:o:h opt
 
 shift $(($OPTIND -1))
 
+# Check the operating system
+os=""
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    os="macOS"
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    os="Linux"
+else
+    echo "Unsupported operating system."
+    exit 1
+fi
+
 echo -e "File Name\tLocal MD5\tOn Azure MD5\tStatus\n" | tee $out
 
 
 for line in $(cat $files); do
 	echo "Working on: $line"
+
+    if [[ "$os" == "macOS" ]]; then
+        ON_PREM_MD5=$(md5 -r $line | cut -f 2 -d '=' | cut -f 2 -d ' ' )
+    elif [[ "$os" == "Linux" ]]; then
+        ON_PREM_MD5=$(md5sum $line | cut -f 2 -d '=' | cut -f 2 -d ' ' )
+    fi
 
 	ON_PREM_MD5=$(md5 $line | cut -f 2 -d '=' | cut -f 2 -d ' ' )
 
